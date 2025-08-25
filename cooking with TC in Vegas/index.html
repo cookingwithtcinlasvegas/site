@@ -25,93 +25,161 @@
   <meta name="twitter:image" content="banner.png" />
 
   <link rel="icon" href="logo.png" />
+  <link rel="preload" href="banner.png" as="image" />
 
   <style>
     :root{
       --bg:#f5e6d3; --ink:#1a2332; --brand:#ff8c42; --deep:#1a2332;
       --card:#2d3748; --gold:#ffd700; --cream:#fff9e6; --muted:#e2d5c7;
       --accent:#e53e3e; --success:#38a169; --shadow:rgba(26,35,50,0.15);
+      --gradient-brand:linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+      --gradient-deep:linear-gradient(135deg, var(--deep) 0%, var(--card) 100%);
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
 
-    /* Header */
+    /* Enhanced Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .animate-in { animation: fadeInUp 0.6s ease-out; }
+    .loading { 
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    /* Header with enhanced interactivity */
     header.site-header{position:sticky;top:0;z-index:50;background:rgba(245,230,211,.95);backdrop-filter:blur(8px);border-bottom:2px solid var(--brand);transition:all .3s ease}
     .wrap{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .logo{display:flex;align-items:center;gap:15px;color:inherit;text-decoration:none}
-    .logo img{width:70px;height:70px;border-radius:12px;box-shadow:0 4px 15px var(--shadow)}
+    .logo{display:flex;align-items:center;gap:15px;color:inherit;text-decoration:none;transition:transform .3s ease}
+    .logo:hover{transform:scale(1.02)}
+    .logo img{width:70px;height:70px;border-radius:12px;box-shadow:0 4px 15px var(--shadow);transition:box-shadow .3s ease}
+    .logo:hover img{box-shadow:0 8px 25px var(--shadow)}
     .logo h1{margin:0;font-size:22px;line-height:1.2;font-weight:800;color:var(--deep)}
     .logo small{color:#666;font-size:11px;font-weight:600}
     nav{display:flex;gap:18px;flex-wrap:wrap}
-    nav a{color:var(--deep);text-decoration:none;font-weight:700;padding:10px 16px;border-radius:20px;border:2px solid transparent;transition:all .3s ease}
-    nav a:hover{background:var(--brand);color:#fff;border-color:var(--deep);transform:translateY(-2px);box-shadow:0 4px 12px rgba(255,140,66,0.3)}
+    nav a{color:var(--deep);text-decoration:none;font-weight:700;padding:10px 16px;border-radius:20px;border:2px solid transparent;transition:all .3s ease;position:relative;overflow:hidden}
+    nav a::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gradient-brand);transition:left .3s ease;z-index:-1}
+    nav a:hover{color:#fff;border-color:var(--deep);transform:translateY(-2px)}
+    nav a:hover::before{left:0}
 
-    /* Hero */
-    .hero{position:relative;min-height:60vh;display:grid;place-items:center;text-align:center;padding:80px 20px;background:
+    /* Enhanced Hero */
+    .hero{position:relative;min-height:70vh;display:grid;place-items:center;text-align:center;padding:80px 20px;background:
       linear-gradient(135deg, rgba(255,140,66,0.1) 0%, rgba(26,35,50,0.05) 100%),
-      url('banner.png') center/cover no-repeat}
+      url('banner.png') center/cover no-repeat;
+      overflow:hidden}
     .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(245,230,211,.05), rgba(255,255,255,.3))}
-    .hero .hero-inner{position:relative;z-index:1}
+    .hero .hero-inner{position:relative;z-index:1;animation:fadeInUp 0.8s ease-out}
     .hero h2{margin:0 0 16px;font-size:clamp(32px,6vw,52px);font-weight:900;background:linear-gradient(135deg, var(--deep) 0%, var(--brand) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .hero p{margin:0 0 24px;color:var(--deep);font-size:18px;font-weight:500}
-    .btn{display:inline-block;background:linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);color:#fff;padding:14px 28px;border-radius:25px;text-decoration:none;font-weight:700;font-size:16px;box-shadow:0 8px 25px rgba(255,140,66,0.3);transition:all .3s ease;border:2px solid var(--deep)}
+    .btn{display:inline-block;background:var(--gradient-brand);color:#fff;padding:14px 28px;border-radius:25px;text-decoration:none;font-weight:700;font-size:16px;box-shadow:0 8px 25px rgba(255,140,66,0.3);transition:all .3s ease;border:2px solid var(--deep);position:relative;overflow:hidden}
+    .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,0.2);border-radius:50%;transition:all .6s ease;transform:translate(-50%,-50%)}
     .btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,140,66,0.4)}
+    .btn:hover::before{width:300px;height:300px}
+
+    /* Enhanced Search */
+    .search-bar{max-width:500px;margin:20px auto;position:relative}
+    .search-bar input{width:100%;padding:12px 50px 12px 20px;border:2px solid var(--brand);border-radius:25px;font-size:16px;background:#fff}
+    .search-bar button{position:absolute;right:5px;top:50%;transform:translateY(-50%);background:var(--brand);color:#fff;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;transition:background .3s ease}
+    .search-bar button:hover{background:var(--accent)}
 
     section{padding:52px 20px}
     .video,.about,.recipes,.newsletter{max-width:1120px;margin:0 auto}
 
-    /* Video */
+    /* Enhanced Video Section */
     .video h3{font-size:28px;margin-bottom:25px;text-align:center;color:var(--deep);font-weight:800}
+    .video-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+    .video-tab{padding:8px 16px;background:#fff;border:2px solid var(--brand);border-radius:20px;cursor:pointer;transition:all .3s ease;font-weight:600}
+    .video-tab.active{background:var(--brand);color:#fff}
+    .video-tab:hover{transform:translateY(-2px)}
     .video-card{background:#fff;border:2px solid var(--brand);border-radius:20px;overflow:hidden;box-shadow:0 12px 30px var(--shadow)}
     .video-container{position:relative;padding-bottom:56.25%;height:0}
     .video-container iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-    /* About */
-    .about-grid{display:grid;grid-template-columns:180px 1fr;gap:30px;align-items:center;background:linear-gradient(135deg, #fff 0%, var(--cream) 100%);padding:40px;border-radius:20px;border:3px solid var(--brand);box-shadow:0 12px 30px var(--shadow)}
-    .about-grid img{width:180px;border-radius:18px;border:3px solid var(--brand);box-shadow:0 8px 20px var(--shadow)}
+    /* Enhanced About */
+    .about-grid{display:grid;grid-template-columns:180px 1fr;gap:30px;align-items:center;background:linear-gradient(135deg, #fff 0%, var(--cream) 100%);padding:40px;border-radius:20px;border:3px solid var(--brand);box-shadow:0 12px 30px var(--shadow);transition:transform .3s ease}
+    .about-grid:hover{transform:translateY(-5px)}
+    .about-grid img{width:180px;border-radius:18px;border:3px solid var(--brand);box-shadow:0 8px 20px var(--shadow);transition:transform .3s ease}
+    .about-grid img:hover{transform:scale(1.05)}
     .about h3{font-size:28px;color:var(--deep);margin-bottom:20px;font-weight:800}
     .about p{font-size:16px;color:#555;line-height:1.7}
 
-    /* Recipes */
-    .recipes-wrap{background:linear-gradient(135deg, var(--deep) 0%, var(--card) 100%);color:var(--cream);border-radius:25px;padding:40px}
+    /* Enhanced Recipe Filters */
+    .recipe-filters{display:flex;justify-content:center;gap:10px;margin-bottom:30px;flex-wrap:wrap}
+    .filter-btn{padding:8px 16px;background:#fff;border:2px solid var(--brand);border-radius:20px;cursor:pointer;transition:all .3s ease;font-weight:600;font-size:14px}
+    .filter-btn.active{background:var(--brand);color:#fff}
+    .filter-btn:hover{transform:translateY(-2px)}
+
+    /* Enhanced Recipes */
+    .recipes-wrap{background:var(--gradient-deep);color:var(--cream);border-radius:25px;padding:40px}
     .recipes h3{font-size:32px;margin-bottom:35px;text-align:center;font-weight:800;color:var(--cream)}
     .recipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px}
-    .recipe-card{background:var(--card);border-radius:18px;overflow:hidden;border:2px solid rgba(255,140,66,0.2);transition:all .3s ease}
+    .recipe-card{background:var(--card);border-radius:18px;overflow:hidden;border:2px solid rgba(255,140,66,0.2);transition:all .3s ease;cursor:pointer;position:relative}
     .recipe-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.35);border-color:var(--brand)}
-    .recipe-thumb{width:100%;aspect-ratio:16/9;background:#0e1730;overflow:hidden}
-    .recipe-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .recipe-card::after{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 20px 20px 0;border-color:transparent var(--gold) transparent transparent;opacity:0;transition:opacity .3s ease}
+    .recipe-card.favorited::after{opacity:1}
+    .recipe-thumb{width:100%;aspect-ratio:16/9;background:#0e1730;overflow:hidden;position:relative}
+    .recipe-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+    .recipe-card:hover .recipe-thumb img{transform:scale(1.1)}
     .recipe-content{padding:16px}
     .recipe-card h4{color:var(--gold);margin:8px 0;font-size:20px;font-weight:700}
     .recipe-card p{margin:0 0 12px;color:#e9edf6}
     .recipe-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;color:#cfd7ea}
     .badge{padding:3px 10px;border-radius:12px;font-weight:700;color:#fff;font-size:11px}
+    .recipe-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    .recipe-rating{color:var(--gold);font-size:14px}
+    .favorite-btn{background:none;border:none;color:var(--gold);cursor:pointer;font-size:18px;transition:transform .3s ease}
+    .favorite-btn:hover{transform:scale(1.2)}
 
-    /* Modal */
-    dialog.recipe-modal{border:0;border-radius:25px;max-width:800px;width:min(94vw,800px);padding:0;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);border:3px solid var(--brand)}
-    .modal-head{background:linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);padding:25px;color:#fff}
+    /* Enhanced Modal */
+    dialog.recipe-modal{border:0;border-radius:25px;max-width:900px;width:min(94vw,900px);padding:0;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);border:3px solid var(--brand)}
+    .modal-head{background:var(--gradient-brand);padding:25px;color:#fff;position:relative}
     .modal-head h4{margin:0;font-size:24px;font-weight:800}
     .modal-body{background:linear-gradient(135deg, #fff 0%, var(--cream) 100%);color:#222;padding:25px;display:grid;gap:18px;max-height:70vh;overflow:auto}
     .modal-body img{width:100%;height:auto;border-radius:15px;border:3px solid var(--brand)}
     .modal-body h5{margin:15px 0 8px;font-size:18px;color:var(--deep);font-weight:800;border-bottom:2px solid var(--brand);padding-bottom:5px}
-    .modal-actions{display:flex;justify-content:space-between;align-items:center;padding:20px 25px;background:#f8f9fa;border-top:2px solid var(--brand)}
+    .modal-actions{display:flex;justify-content:space-between;align-items:center;padding:20px 25px;background:#f8f9fa;border-top:2px solid var(--brand);flex-wrap:wrap;gap:10px}
     .modal-time{font-weight:700;color:var(--brand)}
-    .close-btn{background:var(--deep);color:#fff;border:2px solid var(--brand);padding:12px 20px;border-radius:20px;font-weight:700;cursor:pointer}
-    .close-btn:hover{background:var(--brand)}
+    .action-buttons{display:flex;gap:10px}
+    .close-btn, .timer-btn, .share-btn{background:var(--deep);color:#fff;border:2px solid var(--brand);padding:12px 20px;border-radius:20px;font-weight:700;cursor:pointer;transition:background .3s ease}
+    .close-btn:hover, .timer-btn:hover, .share-btn:hover{background:var(--brand)}
 
-    /* Newsletter */
-    .newsletter{background:linear-gradient(135deg, var(--cream) 0%, #fff 100%);border:3px solid var(--brand);border-radius:20px;padding:35px;text-align:center;box-shadow:0 12px 30px var(--shadow)}
+    /* Cooking Timer */
+    .timer-display{position:fixed;top:20px;right:20px;background:var(--deep);color:#fff;padding:15px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.3);z-index:100;display:none}
+    .timer-display.active{display:block}
+    .timer-controls{margin-top:10px}
+    .timer-controls button{background:var(--brand);color:#fff;border:none;padding:5px 10px;border-radius:5px;margin:0 2px;cursor:pointer}
+
+    /* Enhanced Newsletter */
+    .newsletter{background:linear-gradient(135deg, var(--cream) 0%, #fff 100%);border:3px solid var(--brand);border-radius:20px;padding:35px;text-align:center;box-shadow:0 12px 30px var(--shadow);position:relative;overflow:hidden}
+    .newsletter::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,140,66,0.1) 0%,transparent 70%);animation:pulse 4s infinite;z-index:0}
+    .newsletter > *{position:relative;z-index:1}
     .newsletter form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .newsletter input{padding:14px 18px;border:2px solid var(--brand);border-radius:20px;min-width:260px;font-size:15px;background:#fff}
-    .newsletter button{padding:14px 24px;border:2px solid var(--deep);border-radius:20px;font-weight:700;background:linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);color:#fff;cursor:pointer}
+    .newsletter input{padding:14px 18px;border:2px solid var(--brand);border-radius:20px;min-width:260px;font-size:15px;background:#fff;transition:box-shadow .3s ease}
+    .newsletter input:focus{box-shadow:0 0 0 3px rgba(255,140,66,0.2)}
+    .newsletter button{padding:14px 24px;border:2px solid var(--deep);border-radius:20px;font-weight:700;background:var(--gradient-brand);color:#fff;cursor:pointer;transition:transform .3s ease}
+    .newsletter button:hover{transform:translateY(-2px)}
     .success-message{display:none;margin-top:18px;color:var(--success);font-weight:700;font-size:16px}
-    .success-message.show{display:block}
+    .success-message.show{display:block;animation:fadeInUp 0.5s ease-out}
 
     /* Footer */
-    footer{text-align:center;background:linear-gradient(135deg, #0a0b1a 0%, var(--deep) 100%);color:#eae6df;padding:50px 20px;margin-top:60px}
-    footer a{color:#ffd38b;text-decoration:none;font-weight:600}
+    footer{text-align:center;background:var(--gradient-deep);color:#eae6df;padding:50px 20px;margin-top:60px}
+    footer a{color:#ffd38b;text-decoration:none;font-weight:600;transition:color .3s ease}
     footer a:hover{color:#fff}
 
+    /* Mobile Enhancements */
     @media (max-width:920px){
       .wrap{flex-direction:column;gap:18px}
       .logo img{width:60px;height:60px}
@@ -121,7 +189,25 @@
       .about-grid img{margin:0 auto;width:150px}
       .hero{min-height:50vh;padding:60px 20px}
       .recipe-grid{grid-template-columns:1fr;gap:20px}
+      .modal-actions{flex-direction:column}
+      .search-bar{max-width:100%;margin:20px 0}
+      .recipe-filters, .video-tabs{justify-content:flex-start;overflow-x:auto;padding:0 10px}
     }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      :root{
+        --bg:#1a1a1a;
+        --ink:#f5f5f5;
+        --cream:#2d2d2d;
+        --muted:#404040;
+      }
+    }
+
+    /* Loading states */
+    .recipe-card.loading{background:var(--muted);animation:shimmer 1.5s infinite}
+    .recipe-card.loading .recipe-thumb{background:#ddd}
+    .recipe-card.loading .recipe-content{background:#eee}
   </style>
 
   <!-- Structured Data -->
@@ -167,15 +253,29 @@
       <h2>Easy, Bold, Vegas‑Inspired Dishes You Can Cook at Home</h2>
       <p>Watch episodes, learn techniques, and bring chef energy to your kitchen with TC.</p>
       <a class="btn" href="#latest-video">Watch the Latest Episode</a>
+      
+      <!-- Enhanced Search -->
+      <div class="search-bar">
+        <input type="text" id="recipeSearch" placeholder="Search recipes..." aria-label="Search recipes">
+        <button type="button" onclick="searchRecipes()" aria-label="Search">🔍</button>
+      </div>
     </div>
   </section>
 
   <!-- Latest Video -->
   <section class="video" id="latest-video" aria-label="Latest video">
-    <h3>🎬 Latest Episode</h3>
+    <h3>🎬 Latest Episodes</h3>
+    
+    <!-- Video Tabs -->
+    <div class="video-tabs">
+      <div class="video-tab active" data-video="latest">Latest</div>
+      <div class="video-tab" data-video="popular">Popular</div>
+      <div class="video-tab" data-video="basics">Basics</div>
+    </div>
+    
     <div class="video-card">
       <div class="video-container">
-        <iframe id="ytFrame" src="about:blank" title="Latest Cooking with TC Episode"
+        <iframe id="ytFrame" src="about:blank" title="Cooking with TC Episode"
           allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
@@ -183,7 +283,7 @@
 
   <!-- About -->
   <section class="about" id="about" aria-label="About TC">
-    <div class="about-grid">
+    <div class="about-grid animate-in">
       <img src="logo.png" width="180" height="180" alt="Chef TC avatar" />
       <div>
         <h3>Meet Chef TC</h3>
@@ -197,6 +297,16 @@
   <section class="recipes" id="recipes" aria-label="Featured recipes">
     <div class="recipes-wrap">
       <h3>🍳 Featured Recipes</h3>
+      
+      <!-- Recipe Filters -->
+      <div class="recipe-filters">
+        <div class="filter-btn active" data-filter="all">All</div>
+        <div class="filter-btn" data-filter="easy">Easy</div>
+        <div class="filter-btn" data-filter="medium">Medium</div>
+        <div class="filter-btn" data-filter="hard">Advanced</div>
+        <div class="filter-btn" data-filter="quick">Under 30min</div>
+      </div>
+      
       <div class="recipe-grid" id="recipeGrid"></div>
     </div>
   </section>
@@ -212,7 +322,7 @@
     <div class="success-message" id="successMessage" role="status" aria-live="polite">Thanks for subscribing! 🎉</div>
   </section>
 
-  <!-- Recipe Modal -->
+  <!-- Enhanced Recipe Modal -->
   <dialog class="recipe-modal" id="recipeModal" aria-modal="true">
     <div class="modal-head">
       <h4 id="modalTitle">Recipe</h4>
@@ -231,9 +341,23 @@
     </div>
     <div class="modal-actions">
       <span class="modal-time" id="modalTime"></span>
-      <button class="close-btn" id="closeModal">Close</button>
+      <div class="action-buttons">
+        <button class="timer-btn" id="startTimer">Start Timer</button>
+        <button class="share-btn" id="shareRecipe">Share</button>
+        <button class="close-btn" id="closeModal">Close</button>
+      </div>
     </div>
   </dialog>
+
+  <!-- Cooking Timer -->
+  <div class="timer-display" id="timerDisplay">
+    <div id="timerTime">00:00</div>
+    <div class="timer-controls">
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
+      <button onclick="closeTimer()">×</button>
+    </div>
+  </div>
 
   <footer>
     <p>© <span id="year"></span> Cooking with TC • Made by <a href="https://www.hunger4crypto.com" target="_blank" rel="noopener">Hunger4Crypto</a> with ❤️</p>
@@ -244,16 +368,32 @@
     const $  = (s, r=document)=>r.querySelector(s);
     const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
 
-    // YouTube auto-latest (no API key)
-    const YOUTUBE_CHANNEL_ID = "UClczlZuqOAwDRV9X5MOFNmg";
-    function embedLatestYouTube(){
+    // State management
+    let currentFilter = 'all';
+    let favoriteRecipes = JSON.parse(localStorage.getItem('favorites') || '[]');
+    let timerInterval = null;
+    let timerSeconds = 0;
+
+    // YouTube configuration with multiple videos
+    const YOUTUBE_VIDEOS = {
+      latest: "UClczlZuqOAwDRV9X5MOFNmg", // Channel uploads
+      popular: "PLrAVJ8pJ5IOzJ",
+      basics: "PLrAVJ8pJ5IOzK"
+    };
+
+    function embedYouTube(type = 'latest'){
       const el = $("#ytFrame");
       if(!el) return;
-      const uploadsId = "UU" + YOUTUBE_CHANNEL_ID.slice(2); // UC -> UU
-      el.src = `https://www.youtube.com/embed/videoseries?list=${uploadsId}&autoplay=1&mute=1&rel=0&modestbranding=1`;
+      
+      if (type === 'latest') {
+        const uploadsId = "UU" + YOUTUBE_VIDEOS.latest.slice(2);
+        el.src = `https://www.youtube.com/embed/videoseries?list=${uploadsId}&autoplay=1&mute=1&rel=0&modestbranding=1`;
+      } else {
+        el.src = `https://www.youtube.com/embed/videoseries?list=${YOUTUBE_VIDEOS[type]}&autoplay=1&mute=1&rel=0&modestbranding=1`;
+      }
     }
 
-    // Recipes — LOCAL IMAGES from repo root
+    // Enhanced recipes with more data
     const RECIPES = [
       {
         id:"steak",
@@ -261,7 +401,10 @@
         blurb:"Perfect sear, basted in butter — finish like a pro.",
         time:"30 min",
         difficulty:"Medium",
-        img:"food1.jpg", // <— your file in repo root
+        category:"main",
+        rating: 4.8,
+        servings: 2,
+        img:"food1.jpg",
         intro:"A no‑guesswork method for a sizzling crust and juicy center. Restaurant-quality results every time.",
         ingredients:[
           "2 NY strip steaks (about 1½ in thick)",
@@ -284,7 +427,10 @@
         blurb:"Bright, silky, Italian‑style weeknight hero.",
         time:"25 min",
         difficulty:"Easy",
-        img:"food2.jpg", // <— your file in repo root
+        category:"main",
+        rating: 4.6,
+        servings: 4,
+        img:"food2.jpg",
         intro:"A bright cream sauce finished with lemon zest and parmesan. Pasta water is the secret to silky.",
         ingredients:[
           "12 oz pasta (spaghetti or linguine)",
@@ -309,7 +455,10 @@
         blurb:"Homemade dressing + garlicky croutons = crowd‑pleaser.",
         time:"20 min",
         difficulty:"Easy",
-        img:"food3.png", // <— your file in repo root
+        category:"salad",
+        rating: 4.4,
+        servings: 4,
+        img:"food3.png",
         intro:"Shatter‑crisp romaine, punchy dressing, and a parmesan snow.",
         ingredients:[
           "2 romaine hearts, chopped",
@@ -323,13 +472,149 @@
           "Toss with just enough dressing to coat.",
           "Top with parmesan & croutons; cracked pepper."
         ]
+      },
+      {
+        id:"pizza",
+        title:"Vegas-Style Margherita Pizza",
+        blurb:"Crispy crust, San Marzano tomatoes, fresh basil.",
+        time:"45 min",
+        difficulty:"Medium",
+        category:"main",
+        rating: 4.9,
+        servings: 2,
+        img:"food1.jpg",
+        intro:"Authentic Italian technique meets Vegas boldness. The secret is high heat and quality ingredients.",
+        ingredients:[
+          "Pizza dough (store-bought or homemade)",
+          "½ cup San Marzano tomato sauce",
+          "8 oz fresh mozzarella, torn",
+          "Fresh basil leaves",
+          "Extra virgin olive oil",
+          "Sea salt & black pepper"
+        ],
+        steps:[
+          "Preheat oven to 500°F with pizza stone if available.",
+          "Stretch dough to 12-inch circle on floured surface.",
+          "Spread thin layer of sauce, leaving 1-inch border.",
+          "Add torn mozzarella evenly.",
+          "Bake 10-12 minutes until crust is golden.",
+          "Top with fresh basil and drizzle with olive oil."
+        ]
+      },
+      {
+        id:"risotto",
+        title:"Mushroom Risotto with Truffle Oil",
+        blurb:"Creamy, luxurious, restaurant-quality comfort food.",
+        time:"40 min",
+        difficulty:"Hard",
+        category:"main",
+        rating: 4.7,
+        servings: 4,
+        img:"food2.jpg",
+        intro:"The key to perfect risotto is patience and constant stirring. Each grain should be creamy outside, al dente inside.",
+        ingredients:[
+          "1½ cups Arborio rice",
+          "6 cups warm chicken stock",
+          "1 lb mixed mushrooms, sliced",
+          "1 onion, finely diced",
+          "3 cloves garlic, minced",
+          "½ cup white wine",
+          "½ cup grated Parmesan",
+          "2 tbsp butter",
+          "Truffle oil for finishing"
+        ],
+        steps:[
+          "Sauté mushrooms until golden; set aside.",
+          "Cook onion and garlic until translucent.",
+          "Add rice, toast 2 minutes until edges are translucent.",
+          "Add wine, stir until absorbed.",
+          "Add warm stock one ladle at a time, stirring constantly.",
+          "Continue until rice is creamy, about 18-20 minutes.",
+          "Stir in mushrooms, Parmesan, and butter.",
+          "Finish with truffle oil and serve immediately."
+        ]
+      },
+      {
+        id:"tiramisu",
+        title:"Classic Tiramisu",
+        blurb:"Coffee-soaked ladyfingers, mascarpone clouds.",
+        time:"20 min + 4hrs chill",
+        difficulty:"Medium",
+        category:"dessert",
+        rating: 4.8,
+        servings: 8,
+        img:"food3.png",
+        intro:"No-bake Italian classic that gets better with time. The longer it sits, the more the flavors meld.",
+        ingredients:[
+          "6 egg yolks",
+          "¾ cup sugar",
+          "1¼ cups mascarpone",
+          "1¾ cups heavy cream",
+          "2 packages ladyfinger cookies",
+          "1 cup strong espresso, cooled",
+          "3 tbsp coffee liqueur (optional)",
+          "Unsweetened cocoa powder for dusting"
+        ],
+        steps:[
+          "Whisk egg yolks and sugar until thick and pale.",
+          "Beat in mascarpone until smooth.",
+          "Whip cream to stiff peaks; fold into mascarpone mixture.",
+          "Combine espresso and liqueur in shallow dish.",
+          "Quickly dip each ladyfinger and layer in dish.",
+          "Spread half the mascarpone mixture over cookies.",
+          "Repeat layers, ending with mascarpone.",
+          "Refrigerate 4+ hours, dust with cocoa before serving."
+        ]
       }
     ];
 
-    function renderRecipes(){
+    // Enhanced search functionality
+    function searchRecipes() {
+      const query = $("#recipeSearch").value.toLowerCase();
+      const filtered = RECIPES.filter(recipe => 
+        recipe.title.toLowerCase().includes(query) ||
+        recipe.blurb.toLowerCase().includes(query) ||
+        recipe.ingredients.some(ing => ing.toLowerCase().includes(query))
+      );
+      renderRecipes(filtered);
+    }
+
+    // Enhanced filtering
+    function filterRecipes(filter) {
+      currentFilter = filter;
+      
+      // Update active filter button
+      $('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      $(`[data-filter="${filter}"]`).classList.add('active');
+      
+      let filtered = RECIPES;
+      
+      if (filter !== 'all') {
+        filtered = RECIPES.filter(recipe => {
+          switch(filter) {
+            case 'easy': return recipe.difficulty === 'Easy';
+            case 'medium': return recipe.difficulty === 'Medium';
+            case 'hard': return recipe.difficulty === 'Hard';
+            case 'quick': return parseInt(recipe.time) <= 30;
+            default: return true;
+          }
+        });
+      }
+      
+      renderRecipes(filtered);
+    }
+
+    // Enhanced recipe rendering with favorites and ratings
+    function renderRecipes(recipesToRender = RECIPES){
       const grid = $("#recipeGrid");
-      grid.innerHTML = RECIPES.map(r => `
-        <article class="recipe-card" data-open="${r.id}" tabindex="0" role="button" aria-label="Open ${r.title}">
+      
+      if (recipesToRender.length === 0) {
+        grid.innerHTML = '<div style="text-align:center;color:var(--cream);padding:40px;">No recipes found. Try a different search or filter.</div>';
+        return;
+      }
+      
+      grid.innerHTML = recipesToRender.map(r => `
+        <article class="recipe-card ${favoriteRecipes.includes(r.id) ? 'favorited' : ''}" data-open="${r.id}" tabindex="0" role="button" aria-label="Open ${r.title}">
           <div class="recipe-thumb">
             <img src="${r.img}" alt="${r.title}" loading="lazy" width="1200" height="675">
           </div>
@@ -340,22 +625,63 @@
               <span>⏱️ ${r.time}</span>
               <span class="badge" style="background:${r.difficulty==='Easy'?'#38a169':r.difficulty==='Medium'?'#ff8c42':'#e53e3e'}">${r.difficulty}</span>
             </div>
+            <div class="recipe-actions">
+              <div class="recipe-rating">
+                ${'⭐'.repeat(Math.floor(r.rating))} ${r.rating}
+              </div>
+              <button class="favorite-btn" onclick="toggleFavorite('${r.id}', event)" aria-label="Toggle favorite">
+                ${favoriteRecipes.includes(r.id) ? '❤️' : '🤍'}
+              </button>
+            </div>
           </div>
         </article>
       `).join("");
 
+      // Add click handlers
       grid.addEventListener("click", (e)=>{
         const t = e.target.closest("[data-open]");
-        if (t) openRecipe(t.getAttribute("data-open"));
+        if (t && !e.target.classList.contains('favorite-btn')) {
+          openRecipe(t.getAttribute("data-open"));
+        }
       });
+      
       grid.addEventListener("keydown", (e)=>{
         if ((e.key === "Enter" || e.key === " ")) {
           const t = e.target.closest("[data-open]");
-          if (t) openRecipe(t.getAttribute("data-open"));
+          if (t) {
+            e.preventDefault();
+            openRecipe(t.getAttribute("data-open"));
+          }
         }
       });
     }
 
+    // Favorite functionality
+    function toggleFavorite(recipeId, event) {
+      event.stopPropagation();
+      const index = favoriteRecipes.indexOf(recipeId);
+      
+      if (index > -1) {
+        favoriteRecipes.splice(index, 1);
+      } else {
+        favoriteRecipes.push(recipeId);
+      }
+      
+      localStorage.setItem('favorites', JSON.stringify(favoriteRecipes));
+      renderRecipes(currentFilter === 'all' ? RECIPES : RECIPES.filter(r => filterMatch(r, currentFilter)));
+    }
+
+    function filterMatch(recipe, filter) {
+      switch(filter) {
+        case 'easy': return recipe.difficulty === 'Easy';
+        case 'medium': return recipe.difficulty === 'Medium';
+        case 'hard': return recipe.difficulty === 'Hard';
+        case 'quick': return parseInt(recipe.time) <= 30;
+        default: return true;
+      }
+    }
+
+    // Enhanced modal with timer and sharing
     const modal = $("#recipeModal");
     $("#closeModal").addEventListener("click", ()=> modal.close());
     modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.close(); });
@@ -363,37 +689,229 @@
     function openRecipe(id){
       const r = RECIPES.find(x=>x.id===id);
       if(!r) return;
+      
       $("#modalTitle").textContent = r.title;
       $("#modalImage").src = r.img;
       $("#modalImage").alt = r.title;
       $("#modalIntro").textContent = r.intro;
       $("#modalIngredients").innerHTML = r.ingredients.map(i=>`<li>${i}</li>`).join("");
       $("#modalSteps").innerHTML = r.steps.map(s=>`<li>${s}</li>`).join("");
-      $("#modalTime").textContent = `⏱️ ${r.time} • 📊 ${r.difficulty}`;
+      $("#modalTime").textContent = `⏱️ ${r.time} • 📊 ${r.difficulty} • 🍽️ Serves ${r.servings}`;
+      
+      // Set up timer button
+      $("#startTimer").onclick = () => startCookingTimer(parseInt(r.time));
+      $("#shareRecipe").onclick = () => shareRecipe(r);
+      
       modal.showModal();
     }
 
-    // Newsletter (demo)
+    // Cooking timer functionality
+    function startCookingTimer(minutes) {
+      timerSeconds = minutes * 60;
+      $("#timerDisplay").classList.add('active');
+      updateTimerDisplay();
+      
+      timerInterval = setInterval(() => {
+        timerSeconds--;
+        updateTimerDisplay();
+        
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          alert('⏰ Timer finished! Your dish should be ready!');
+          closeTimer();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      $("#timerTime").textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function pauseTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      } else {
+        timerInterval = setInterval(() => {
+          timerSeconds--;
+          updateTimerDisplay();
+          if (timerSeconds <= 0) {
+            clearInterval(timerInterval);
+            alert('⏰ Timer finished!');
+            closeTimer();
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = 0;
+      updateTimerDisplay();
+    }
+
+    function closeTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      $("#timerDisplay").classList.remove('active');
+    }
+
+    // Recipe sharing
+    function shareRecipe(recipe) {
+      if (navigator.share) {
+        navigator.share({
+          title: recipe.title,
+          text: recipe.blurb,
+          url: window.location.href + '#recipe-' + recipe.id
+        });
+      } else {
+        // Fallback - copy to clipboard
+        const shareText = `Check out this recipe: ${recipe.title} - ${recipe.blurb}\n${window.location.href}#recipe-${recipe.id}`;
+        navigator.clipboard.writeText(shareText).then(() => {
+          alert('Recipe link copied to clipboard!');
+        });
+      }
+    }
+
+    // Video tab functionality
+    function setupVideoTabs() {
+      $('.video-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          $('.video-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          embedYouTube(tab.dataset.video);
+        });
+      });
+    }
+
+    // Filter functionality
+    function setupFilters() {
+      $('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterRecipes(btn.dataset.filter);
+        });
+      });
+    }
+
+    // Search functionality
+    $("#recipeSearch").addEventListener('input', debounce(searchRecipes, 300));
+    $("#recipeSearch").addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchRecipes();
+      }
+    });
+
+    // Debounce helper
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Enhanced newsletter with better UX
     $("#newsletterForm").addEventListener("submit", (e)=>{
       e.preventDefault();
       const btn = e.target.querySelector('button');
+      const input = $("#emailInput");
       const text = btn.textContent;
+      
+      // Simple email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(input.value)) {
+        input.style.borderColor = 'var(--accent)';
+        setTimeout(() => input.style.borderColor = 'var(--brand)', 3000);
+        return;
+      }
+      
       btn.textContent = 'Subscribing...';
       btn.disabled = true;
+      
       setTimeout(()=>{
         btn.textContent = text;
         btn.disabled = false;
-        $("#emailInput").value = '';
+        input.value = '';
         $("#successMessage").classList.add('show');
-        setTimeout(()=> $("#successMessage").classList.remove('show'), 3000);
-      }, 1000);
+        setTimeout(()=> $("#successMessage").classList.remove('show'), 4000);
+      }, 1500);
     });
 
-    // Init
+    // Intersection Observer for animations
+    function setupAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      $('.about-grid, .recipe-card').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // Performance: Lazy load images
+    function setupLazyLoading() {
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.remove('loading');
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      $('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Escape to close modal or timer
+      if (e.key === 'Escape') {
+        if (modal.open) modal.close();
+        if ($("#timerDisplay").classList.contains('active')) closeTimer();
+      }
+      
+      // Ctrl/Cmd + K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        $("#recipeSearch").focus();
+      }
+    });
+
+    // Initialize everything
     document.addEventListener("DOMContentLoaded", ()=>{
       $("#year").textContent = new Date().getFullYear();
       renderRecipes();
-      embedLatestYouTube();
+      embedYouTube();
+      setupVideoTabs();
+      setupFilters();
+      setupAnimations();
+      setupLazyLoading();
+      
+      // Add smooth scrolling for internal links
+      $('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = $(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
     });
   </script>
 </body>
