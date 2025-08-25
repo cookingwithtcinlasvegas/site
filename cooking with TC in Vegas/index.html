@@ -8,26 +8,11 @@
   <meta name="description" content="Cooking with TC in Las Vegas: chef‑style recipes, DIY cooking tips, and Italian‑meets‑Vegas flavor. Watch episodes, learn techniques, and try easy weeknight dishes.">
   <meta name="keywords" content="Cooking, Chef, DIY cooking, Recipes, Las Vegas, Vegas food, Italian recipes, fusion, home cooking, kitchen tips, chef TC">
   <meta name="robots" content="index, follow">
-  <!-- After you deploy, set this to your live URL -->
-  <link rel="canonical" href="">
   <meta name="theme-color" content="#ff8c42">
 
-  <!-- Social cards (update to absolute URLs after deploy) -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Cooking with TC in Las Vegas — Chef‑Style Recipes & DIY Cooking">
   <meta property="og:description" content="Chef TC brings Italian flair and Vegas flavor to your kitchen. Watch episodes and cook along with simple, bold recipes.">
-  <meta property="og:image" content="banner.png">
-  <meta property="og:image:alt" content="Cooking with TC in Las Vegas banner">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Cooking with TC in Las Vegas — Chef‑Style Recipes & DIY Cooking">
-  <meta name="twitter:description" content="Chef‑style recipes, DIY tips, and Vegas flavor — with TC.">
-  <meta name="twitter:image" content="banner.png">
-
-  <link rel="icon" href="logo.png">
-
-  <!-- Improve LCP: preload hero image -->
-  <link rel="preload" as="image" href="banner.png" imagesrcset="banner.png" imagesizes="100vw" />
 
   <style>
     :root{
@@ -52,7 +37,7 @@
     nav a:hover{background:var(--brand);color:#fff;border-color:var(--deep);transform:translateY(-2px);box-shadow:0 4px 12px rgba(255,140,66,0.3)}
 
     /* Hero */
-    .hero{position:relative;min-height:60vh;display:grid;place-items:center;text-align:center;padding:80px 20px;background:linear-gradient(135deg, rgba(255,140,66,0.08) 0%, rgba(26,35,50,0.05) 100%), url('banner.png') center/cover no-repeat;overflow:hidden;will-change:transform}
+    .hero{position:relative;min-height:60vh;display:grid;place-items:center;text-align:center;padding:80px 20px;background:linear-gradient(135deg, rgba(255,140,66,0.08) 0%, rgba(26,35,50,0.05) 100%), linear-gradient(45deg, #ff8c42 0%, #e53e3e 50%, #1a2332 100%);overflow:hidden;will-change:transform}
     .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(245,230,211,.05), rgba(255,255,255,.3))}
     .hero .hero-inner{position:relative;z-index:1}
     .hero h2{margin:0 0 16px;font-size:clamp(32px,6vw,52px);font-weight:900;background:linear-gradient(135deg, var(--deep) 0%, var(--brand) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -79,7 +64,7 @@
     .recipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px}
     .recipe-card{background:var(--card);border-radius:18px;overflow:hidden;cursor:pointer;outline:none;transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;border:2px solid rgba(255,140,66,0.2);position:relative}
     .recipe-card:hover, .recipe-card:focus{transform:translateY(-6px);box-shadow:0 18px 45px rgba(0,0,0,0.35);border-color:var(--brand)}
-    .recipe-thumb{width:100%;aspect-ratio:16/9;background:#0e1730;overflow:hidden}
+    .recipe-thumb{width:100%;aspect-ratio:16/9;background:#0e1730;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:48px}
     .recipe-thumb img{width:100%;height:100%;object-fit:cover;display:block}
     .recipe-content{padding:16px}
     .recipe-card h4{color:var(--gold);margin:8px 0 6px;font-size:20px;font-weight:700}
@@ -134,6 +119,26 @@
       section{padding:40px 20px}
       .recipe-grid{grid-template-columns:1fr;gap:20px}
     }
+
+    /* Placeholder styles */
+    .placeholder-logo {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    
+    .placeholder-food {
+      background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
   </style>
 
   <!-- JSON‑LD -->
@@ -142,13 +147,10 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Cooking with TC in Las Vegas",
-    "url": "",
     "description": "Chef‑style recipes, DIY cooking tips, and Vegas flavor with Chef TC.",
     "publisher": {
       "@type": "Person",
-      "name": "Chef TC",
-      "image": "logo.png",
-      "sameAs": ["https://www.youtube.com/@TonyCaporale-w8u"]
+      "name": "Chef TC"
     }
   }
   </script>
@@ -158,7 +160,7 @@
   <header class="site-header" aria-label="Site header">
     <div class="wrap">
       <a class="logo" href="#top" aria-label="Cooking with TC Home">
-        <img src="logo.png" width="120" height="120" alt="Cooking with TC logo">
+        <div class="placeholder-logo" style="width:70px;height:70px;border-radius:12px;box-shadow:0 4px 15px var(--shadow)">TC</div>
         <div>
           <h1>Cooking with TC in Las Vegas</h1>
           <small>🌴 Italian flair • Vegas flavor • Bold recipes 🎰</small>
@@ -196,7 +198,7 @@
   <!-- About -->
   <section class="about reveal" id="about" aria-label="About TC">
     <div class="about-grid">
-      <img src="logo.png" width="180" height="180" alt="Chef TC avatar">
+      <div class="placeholder-logo" style="width:180px;height:180px;border-radius:18px;border:3px solid var(--brand);box-shadow:0 8px 20px var(--shadow)">TC</div>
       <div>
         <h3>Meet Chef TC</h3>
         <p>I'm Tony — TC — blending Italian technique with the punchy spirit of Las Vegas. From weeknight‑easy to dinner‑party bold, every recipe shows you how to cook with confidence and flair.</p>
@@ -229,7 +231,7 @@
       <h4 id="modalTitle">Recipe</h4>
     </div>
     <div class="modal-body">
-      <img id="modalImage" src="" alt="Recipe image" width="800" height="450">
+      <div id="modalImage" style="width:100%;height:300px;border-radius:15px;border:3px solid var(--brand);box-shadow:0 8px 20px var(--shadow)" class="placeholder-food">🍽️</div>
       <div id="modalIntro" style="color:#333"></div>
       <div>
         <h5>🛒 Ingredients</h5>
@@ -269,7 +271,7 @@
       el.src = `https://www.youtube.com/embed/videoseries?list=${uploadsId}&autoplay=1&mute=1&rel=0&modestbranding=1`;
     }
 
-    /* Recipe data (local images) */
+    /* Recipe data (placeholder images) */
     const RECIPES = [
       {
         id:"steak",
@@ -277,7 +279,7 @@
         blurb:"Perfect sear, basted in butter — finish like a pro.",
         time:"30 min",
         difficulty:"Medium",
-        img:"food1.jpg",
+        emoji:"🥩",
         intro:"A no‑guesswork method for a sizzling crust and juicy center.",
         ingredients:[
           "2 NY strip steaks (about 1½ in thick)",
@@ -301,7 +303,7 @@
         blurb:"Bright, silky, Italian‑style weeknight hero.",
         time:"25 min",
         difficulty:"Easy",
-        img:"food2.jpg",
+        emoji:"🍝",
         intro:"A bright cream sauce finished with lemon zest and parmesan; pasta water creates perfect silk.",
         ingredients:[
           "12 oz pasta (spaghetti or linguine)",
@@ -326,7 +328,7 @@
         blurb:"Homemade dressing + garlicky croutons = crowd‑pleaser.",
         time:"20 min",
         difficulty:"Easy",
-        img:"food3.jpg",
+        emoji:"🥗",
         intro:"Shatter‑crisp romaine, punchy dressing, and a parmesan snow.",
         ingredients:[
           "2 romaine hearts, chopped",
@@ -348,8 +350,8 @@
       const grid = $("#recipeGrid");
       grid.innerHTML = RECIPES.map(r => `
         <article class="recipe-card reveal" data-open="${r.id}" tabindex="0" role="button" aria-label="Open ${r.title}">
-          <div class="recipe-thumb">
-            <img src="${r.img}" alt="${r.title}" loading="lazy" width="640" height="360">
+          <div class="recipe-thumb placeholder-food">
+            ${r.emoji}
           </div>
           <div class="recipe-content">
             <h4>${r.title}</h4>
@@ -358,7 +360,6 @@
               <span>⏱️ ${r.time}</span>
               <span class="badge" style="background:${r.difficulty==='Easy'?'#38a169':r.difficulty==='Medium'?'#ffb347':'#e53e3e'}">${r.difficulty}</span>
             </div>
-            <button class="btn" data-open="${r.id}" aria-label="View ${r.title}">View Recipe</button>
           </div>
         </article>
       `).join("");
@@ -383,7 +384,9 @@
 
     function _renderRecipeIntoModal(r){
       $("#modalTitle").textContent = r.title;
-      $("#modalImage").src = r.img;  $("#modalImage").alt = r.title;
+      const modalImg = $("#modalImage");
+      modalImg.textContent = r.emoji;
+      modalImg.className = "placeholder-food";
       $("#modalIntro").textContent = r.intro;
       $("#modalIngredients").innerHTML = r.ingredients.map(i=>`<li>${i}</li>`).join("");
       $("#modalSteps").innerHTML = r.steps.map(s=>`<li>${s}</li>`).join("");
